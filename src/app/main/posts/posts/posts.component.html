@@ -17,14 +17,9 @@
                                 <div class="col-xl-12">
                                     <div class="form-group m-form__group align-items-center">
                                         <div class="input-group">
-                                            <input
-                                                [(ngModel)]="filterText"
-                                                name="filterText"
-                                                autoFocus
-                                                class="form-control m-input"
-                                                [placeholder]="l('SearchWithThreeDot')"
-                                                type="text"
-                                            />
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text" />
                                             <span class="input-group-btn">
                                                 <button (click)="getPosts()" class="btn btn-primary" type="submit">
                                                     <i class="flaticon-search-1"></i>
@@ -42,66 +37,40 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="TitleFilter">{{ l('Title') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="TitleFilter"
-                                            name="titleFilter"
-                                            [(ngModel)]="titleFilter"
-                                        />
+                                        <input type="text" class="form-control" id="TitleFilter" name="titleFilter"
+                                            [(ngModel)]="titleFilter" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="DescriptionFilter">{{ l('Description') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="DescriptionFilter"
-                                            name="descriptionFilter"
-                                            [(ngModel)]="descriptionFilter"
-                                        />
+                                        <input type="text" class="form-control" id="DescriptionFilter"
+                                            name="descriptionFilter" [(ngModel)]="descriptionFilter" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="IsActiveFilter">{{ l('IsActive') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="IsActiveFilter"
-                                            name="isActiveFilter"
-                                            [(ngModel)]="isActiveFilter"
-                                        />
+                                        <input type="text" class="form-control" id="IsActiveFilter"
+                                            name="isActiveFilter" [(ngModel)]="isActiveFilter" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="ItemTitleFilter">({{ l('Item') }}) {{ l('Title') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="ItemTitleFilter"
-                                            name="itemTitleFilter"
-                                            [(ngModel)]="itemTitleFilter"
-                                        />
+                                        <input type="text" class="form-control" id="ItemTitleFilter"
+                                            name="itemTitleFilter" [(ngModel)]="itemTitleFilter" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-sm-12">
-                                    <span
-                                        class="clickable-item text-muted"
-                                        *ngIf="!advancedFiltersAreShown"
-                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
-                                        ><i class="fa fa-angle-down"></i> {{ l('ShowAdvancedFilters') }}</span
-                                    >
-                                    <span
-                                        class="clickable-item text-muted"
-                                        *ngIf="advancedFiltersAreShown"
-                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
-                                        ><i class="fa fa-angle-up"></i> {{ l('HideAdvancedFilters') }}</span
-                                    >
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{ l('ShowAdvancedFilters') }}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown = !advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{ l('HideAdvancedFilters') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -110,24 +79,15 @@
                     <div class="row align-items-center">
                         <!--<Primeng-Datatable-Start>-->
                         <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
-                            <p-table
-                                #dataTable
-                                (onLazyLoad)="getPosts($event)"
-                                [value]="primengTableHelper.records"
-                                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
-                                [paginator]="false"
-                                [lazy]="true"
-                                [scrollable]="true"
-                                ScrollWidth="100%"
+                            <p-table #dataTable (onLazyLoad)="getPosts($event)" [value]="primengTableHelper.records"
+                                rows="{{ primengTableHelper.defaultRecordsCountPerPage }}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
                                 [responsive]="primengTableHelper.isResponsive"
-                                [resizableColumns]="primengTableHelper.resizableColumns"
-                            >
+                                [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th
-                                            style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')"
-                                        >
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')">
                                             {{ l('Actions') }}
                                         </th>
                                         <th style="width: 150px" pSortableColumn="itemFk.title">
@@ -152,10 +112,8 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
                                     <tr>
-                                        <td
-                                            style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')"
-                                        >
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
@@ -163,30 +121,20 @@
                                                 </button>
                                                 <ul class="dropdown-menu" *dropdownMenu>
                                                     <li>
-                                                        <a
-                                                            href="javascript:;"
-                                                            class="dropdown-item"
-                                                            (click)="viewPostModal.show(record)"
-                                                            >{{ l('View') }}</a
-                                                        >
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="viewPostModal.show(record)">{{ l('View') }}</a>
                                                     </li>
                                                     <li>
-                                                        <a
-                                                            href="javascript:;"
+                                                        <a href="javascript:;"
                                                             *ngIf="permission.isGranted('Pages.Posts.Edit')"
                                                             class="dropdown-item"
-                                                            (click)="createOrEditPostModal.show(record.post.id)"
-                                                            >{{ l('Edit') }}</a
-                                                        >
+                                                            (click)="createOrEditPostModal.show(record.post.id)">{{
+                                                            l('Edit') }}</a>
                                                     </li>
                                                     <li>
-                                                        <a
-                                                            class="dropdown-item"
-                                                            href="javascript:;"
+                                                        <a class="dropdown-item" href="javascript:;"
                                                             *ngIf="permission.isGranted('Pages.Posts.Delete')"
-                                                            (click)="deletePost(record.post)"
-                                                            >{{ l('Delete') }}</a
-                                                        >
+                                                            (click)="deletePost(record.post)">{{ l('Delete') }}</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -209,10 +157,8 @@
                                         </td>
 
                                         <td style="width: 50px">
-                                            <button
-                                                class="btn btn-primary btn-xs"
-                                                (click)="openChildRowForTag(i, 'Tag_PostId')"
-                                            >
+                                            <button class="btn btn-primary btn-xs"
+                                                (click)="openChildRowForTag(i, 'Tag_PostId')">
                                                 {{ 'EditTag' | localize }}
                                             </button>
                                         </td>
@@ -220,8 +166,8 @@
 
                                     <tr *ngIf="tagRowSelection[i] && childEntitySelection['Tag_PostId']">
                                         <td colspan="6">
-                                            <masterDetailChild_Post_tags-component [postId]="record.post.id">
-                                            </masterDetailChild_Post_tags-component>
+                                            <!-- <masterDetailChild_Post_tags-component [postId]="record.post.id">
+                                            </masterDetailChild_Post_tags-component> -->
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -230,17 +176,13 @@
                                 {{ l('NoData') }}
                             </div>
                             <div class="primeng-paging-container">
-                                <p-paginator
-                                    [rows]="primengTableHelper.defaultRecordsCountPerPage"
-                                    #paginator
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                                     (onPageChange)="getPosts($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-                                    [showCurrentPageReport]="true"
-                                    [currentPageReportTemplate]="
+                                    [showCurrentPageReport]="true" [currentPageReportTemplate]="
                                         'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
-                                    "
-                                >
+                                    ">
                                 </p-paginator>
                             </div>
                         </div>
