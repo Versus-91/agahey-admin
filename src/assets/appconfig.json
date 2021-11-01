@@ -1,6 +1,7 @@
 {
-  "remoteServiceBaseUrl": "https://agahey.com",
-  "appBaseUrl": "https://agahey-admin.pages.dev",
+
+  "remoteServiceBaseUrl": "https://localhost:44301",
+  "appBaseUrl": "http://localhost:4200",
   "localeMappings": {
     "angular": [
       {
