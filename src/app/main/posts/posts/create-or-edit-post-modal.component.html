@@ -1,0 +1,114 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #postForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="post.id">{{ l('EditPost') }}</span>
+                        <span *ngIf="!post.id">{{ l('CreateNewPost') }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group m-form__group">
+                        <label for="ItemTitle">{{ l('Item') }}</label>
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                id="ItemTitle"
+                                name="itemTitle"
+                                [(ngModel)]="itemTitle"
+                                type="text"
+                                disabled
+                            />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemModal()" type="button">
+                                    <i class="fa fa-search"></i> {{ l('Pick') }}
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemIdNull()">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        class="form-control"
+                        name="post.itemId"
+                        [(ngModel)]="post.itemId"
+                        type="text"
+                        required
+                        hidden
+                    />
+
+                    <div class="form-group">
+                        <label for="Post_Title">{{ l('Title') }} *</label>
+                        <input
+                            type="text"
+                            #Post_Title="ngModel"
+                            id="Post_Title"
+                            class="form-control"
+                            [(ngModel)]="post.title"
+                            name="Title"
+                            required
+                        />
+                        <validation-messages [formCtrl]="Post_Title"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Post_Description">{{ l('Description') }}</label>
+                        <input
+                            type="text"
+                            #Post_Description="ngModel"
+                            id="Post_Description"
+                            class="form-control"
+                            [(ngModel)]="post.description"
+                            name="Description"
+                        />
+                        <validation-messages [formCtrl]="Post_Description"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Post_IsActive">{{ l('IsActive') }}</label>
+                        <input
+                            type="text"
+                            #Post_IsActive="ngModel"
+                            id="Post_IsActive"
+                            class="form-control"
+                            [(ngModel)]="post.isActive"
+                            name="IsActive"
+                        />
+                        <validation-messages [formCtrl]="Post_IsActive"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!postForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <postItemLookupTableModal #postItemLookupTableModal (modalSave)="getNewItemId()"></postItemLookupTableModal>
+</div>

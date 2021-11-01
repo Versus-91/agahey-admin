@@ -1,0 +1,110 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #categoryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="category.id">{{ l('EditCategory') }}</span>
+                        <span *ngIf="!category.id">{{ l('CreateNewCategory') }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Category_Title">{{ l('Title') }} *</label>
+                        <input
+                            type="text"
+                            #Category_Title="ngModel"
+                            id="Category_Title"
+                            class="form-control"
+                            [(ngModel)]="category.title"
+                            name="Title"
+                            required
+                        />
+                        <validation-messages [formCtrl]="Category_Title"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Category_Description">{{ l('Description') }}</label>
+                        <input
+                            type="text"
+                            #Category_Description="ngModel"
+                            id="Category_Description"
+                            class="form-control"
+                            [(ngModel)]="category.description"
+                            name="Description"
+                        />
+                        <validation-messages [formCtrl]="Category_Description"></validation-messages>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Category_IsActive" class="kt-checkbox">
+                            <input
+                                id="Category_IsActive"
+                                #Category_IsActive="ngModel"
+                                type="checkbox"
+                                name="IsActive"
+                                [(ngModel)]="category.isActive"
+                            />
+                            {{ l('IsActive') }}
+                            <span></span>
+                        </label>
+                        <validation-messages [formCtrl]="Category_IsActive"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Category_Image">{{ l('Image') }}</label>
+                        <input
+                            type="text"
+                            #Category_Image="ngModel"
+                            id="Category_Image"
+                            class="form-control"
+                            [(ngModel)]="category.image"
+                            name="Image"
+                        />
+                        <validation-messages [formCtrl]="Category_Image"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Category_Video">{{ l('Video') }}</label>
+                        <input
+                            type="text"
+                            #Category_Video="ngModel"
+                            id="Category_Video"
+                            class="form-control"
+                            [(ngModel)]="category.video"
+                            name="Video"
+                        />
+                        <validation-messages [formCtrl]="Category_Video"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!categoryForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

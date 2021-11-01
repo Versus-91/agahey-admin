@@ -1,0 +1,97 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #collectionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="collection.id">{{ l('EditCollection') }}</span>
+                        <span *ngIf="!collection.id">{{ l('CreateNewCollection') }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Collection_Name">{{ l('Name') }} *</label>
+                        <input
+                            type="text"
+                            #Collection_Name="ngModel"
+                            id="Collection_Name"
+                            class="form-control"
+                            [(ngModel)]="collection.name"
+                            name="Name"
+                            required
+                        />
+                        <validation-messages [formCtrl]="Collection_Name"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Collection_Description">{{ l('Description') }}</label>
+                        <input
+                            type="text"
+                            #Collection_Description="ngModel"
+                            id="Collection_Description"
+                            class="form-control"
+                            [(ngModel)]="collection.description"
+                            name="Description"
+                        />
+                        <validation-messages [formCtrl]="Collection_Description"></validation-messages>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Collection_IsActive" class="kt-checkbox">
+                            <input
+                                id="Collection_IsActive"
+                                #Collection_IsActive="ngModel"
+                                type="checkbox"
+                                name="IsActive"
+                                [(ngModel)]="collection.isActive"
+                            />
+                            {{ l('IsActive') }}
+                            <span></span>
+                        </label>
+                        <validation-messages [formCtrl]="Collection_IsActive"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Collection_CountOfItems">{{ l('CountOfItems') }}</label>
+                        <input
+                            type="number"
+                            #Collection_CountOfItems="ngModel"
+                            id="Collection_CountOfItems"
+                            class="form-control"
+                            [(ngModel)]="collection.countOfItems"
+                            name="CountOfItems"
+                        />
+                        <validation-messages [formCtrl]="Collection_CountOfItems"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!collectionForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
