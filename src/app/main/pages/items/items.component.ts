@@ -37,7 +37,7 @@ export class ItemsComponent extends AppComponentBase {
     isActiveFilter = -1;
     imageAdressFilter = '';
     videoAddressFilter = '';
-    collectionNameFilter = '';
+    subCollectionTitleFilter = '';
 
     constructor(
         injector: Injector,
@@ -67,7 +67,7 @@ export class ItemsComponent extends AppComponentBase {
                 this.isActiveFilter,
                 this.imageAdressFilter,
                 this.videoAddressFilter,
-                this.collectionNameFilter,
+                this.subCollectionTitleFilter,
                 this.primengTableHelper.getSorting(this.dataTable),
                 this.primengTableHelper.getSkipCount(this.paginator, event),
                 this.primengTableHelper.getMaxResultCount(this.paginator, event)

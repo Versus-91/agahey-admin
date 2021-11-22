@@ -102,15 +102,15 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="CollectionNameFilter"
-                                            >({{ l('Collection') }}) {{ l('Name') }}</label
+                                        <label for="SubCollectionTitleFilter"
+                                            >({{ l('SubCollection') }}) {{ l('Title') }}</label
                                         >
                                         <input
                                             type="text"
                                             class="form-control"
-                                            id="CollectionNameFilter"
-                                            name="collectionNameFilter"
-                                            [(ngModel)]="collectionNameFilter"
+                                            id="SubCollectionTitleFilter"
+                                            name="subCollectionTitleFilter"
+                                            [(ngModel)]="subCollectionTitleFilter"
                                         />
                                     </div>
                                 </div>
@@ -157,9 +157,9 @@
                                         >
                                             {{ l('Actions') }}
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="collectionFk.name">
-                                            {{ l('Name') }}
-                                            <p-sortIcon field="collectionName"></p-sortIcon>
+                                        <th style="width: 150px" pSortableColumn="subCollectionFk.title">
+                                            {{ l('Title') }}
+                                            <p-sortIcon field="subCollectionTitle"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="title">
                                             {{ l('Title') }}
@@ -225,8 +225,8 @@
                                             </div>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l('Name') }}</span>
-                                            {{ record.collectionName }}
+                                            <span class="p-column-title"> {{ l('Title') }}</span>
+                                            {{ record.subCollectionTitle }}
                                         </td>
                                         <td style="width: 150px">
                                             <span class="p-column-title"> {{ l('Title') }}</span>

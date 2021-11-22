@@ -9,6 +9,13 @@ import { RouterModule } from '@angular/router';
                 children: [
                     
                     {
+                        path: 'posts/postTypeses',
+                        loadChildren: () => import('./posts/postTypeses/postTypes.module').then(m => m.PostTypesModule),
+                        data: { permission: 'Pages.PostTypeses' }
+                    },
+                
+                    
+                    {
                         path: 'posts/comments',
                         loadChildren: () => import('./posts/comments/comment.module').then(m => m.CommentModule),
                         data: { permission: 'Pages.Comments' }

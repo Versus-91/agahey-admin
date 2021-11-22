@@ -21,29 +21,21 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-6 mb-3">
-                        <h6>{{ l('Title') }} :</h6>
-                        {{ item.post.title }}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>{{ l('Description') }} :</h6>
-                        {{ item.post.description }}
+                        <h6>{{ l('Name') }} :</h6>
+                        {{ item.postTypes.name }}
                     </div>
                     <div class="col-6 mb-3">
                         <h6>{{ l('IsActive') }} :</h6>
-                        {{ item.post.isActive }}
+                        <div *ngIf="item.postTypes.isActive" class="text-left">
+                            <i class="fa fa-check-circle text-success" title="True"></i>
+                        </div>
+                        <div *ngIf="!item.postTypes.isActive" class="text-left">
+                            <i class="fa fa-times-circle" title="False"></i>
+                        </div>
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>{{ l('KeyWords') }} :</h6>
-                        {{ item.post.keyWords }}
-                    </div>
-
-                    <div class="col-6 mb-3">
-                        <h6>({{ l('Item') }}) {{ l('Title') }} :</h6>
-                        {{ item.itemTitle }}
-                    </div>
-                    <div class="col-6 mb-3">
-                        <h6>({{ l('PostTypes') }}) {{ l('Name') }} :</h6>
-                        {{ item.postTypesName }}
+                        <h6>{{ l('Description') }} :</h6>
+                        {{ item.postTypes.description }}
                     </div>
                 </div>
             </div>

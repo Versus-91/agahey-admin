@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { PostItemLookupTableModalComponent } from './post-item-lookup-table-modal.component';
+import { PostPostTypesLookupTableModalComponent } from './post-postTypes-lookup-table-modal.component';
 
 @Component({
     selector: 'createOrEditPostModal',
@@ -16,6 +17,8 @@ export class CreateOrEditPostModalComponent extends AppComponentBase implements 
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @ViewChild('postItemLookupTableModal', { static: true })
     postItemLookupTableModal: PostItemLookupTableModalComponent;
+    @ViewChild('postPostTypesLookupTableModal', { static: true })
+    postPostTypesLookupTableModal: PostPostTypesLookupTableModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -25,6 +28,7 @@ export class CreateOrEditPostModalComponent extends AppComponentBase implements 
     post: CreateOrEditPostDto = new CreateOrEditPostDto();
 
     itemTitle = '';
+    postTypesName = '';
 
     constructor(
         injector: Injector,
@@ -39,6 +43,7 @@ export class CreateOrEditPostModalComponent extends AppComponentBase implements 
             this.post = new CreateOrEditPostDto();
             this.post.id = postId;
             this.itemTitle = '';
+            this.postTypesName = '';
 
             this.active = true;
             this.modal.show();
@@ -47,6 +52,7 @@ export class CreateOrEditPostModalComponent extends AppComponentBase implements 
                 this.post = result.post;
 
                 this.itemTitle = result.itemTitle;
+                this.postTypesName = result.postTypesName;
 
                 this.active = true;
                 this.modal.show();
@@ -76,15 +82,28 @@ export class CreateOrEditPostModalComponent extends AppComponentBase implements 
         this.postItemLookupTableModal.displayName = this.itemTitle;
         this.postItemLookupTableModal.show();
     }
+    openSelectPostTypesModal() {
+        this.postPostTypesLookupTableModal.id = this.post.postTypesId;
+        this.postPostTypesLookupTableModal.displayName = this.postTypesName;
+        this.postPostTypesLookupTableModal.show();
+    }
 
     setItemIdNull() {
         this.post.itemId = null;
         this.itemTitle = '';
     }
+    setPostTypesIdNull() {
+        this.post.postTypesId = null;
+        this.postTypesName = '';
+    }
 
     getNewItemId() {
         this.post.itemId = this.postItemLookupTableModal.id;
         this.itemTitle = this.postItemLookupTableModal.displayName;
+    }
+    getNewPostTypesId() {
+        this.post.postTypesId = this.postPostTypesLookupTableModal.id;
+        this.postTypesName = this.postPostTypesLookupTableModal.displayName;
     }
 
     close(): void {

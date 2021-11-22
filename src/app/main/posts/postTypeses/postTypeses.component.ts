@@ -1,13 +1,13 @@
 ﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostsServiceProxy, PostDto } from '@shared/service-proxies/service-proxies';
+import { PostTypesesServiceProxy, PostTypesDto } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CreateOrEditPostModalComponent } from './create-or-edit-post-modal.component';
+import { CreateOrEditPostTypesModalComponent } from './create-or-edit-postTypes-modal.component';
 
-import { ViewPostModalComponent } from './view-post-modal.component';
+import { ViewPostTypesModalComponent } from './view-postTypes-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
@@ -19,29 +19,27 @@ import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 
 @Component({
-    templateUrl: './posts.component.html',
+    templateUrl: './postTypeses.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
 })
-export class PostsComponent extends AppComponentBase {
-    @ViewChild('createOrEditPostModal', { static: true }) createOrEditPostModal: CreateOrEditPostModalComponent;
-    @ViewChild('viewPostModalComponent', { static: true }) viewPostModal: ViewPostModalComponent;
+export class PostTypesesComponent extends AppComponentBase {
+    @ViewChild('createOrEditPostTypesModal', { static: true })
+    createOrEditPostTypesModal: CreateOrEditPostTypesModalComponent;
+    @ViewChild('viewPostTypesModalComponent', { static: true }) viewPostTypesModal: ViewPostTypesModalComponent;
 
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     advancedFiltersAreShown = false;
     filterText = '';
-    titleFilter = '';
+    nameFilter = '';
+    isActiveFilter = -1;
     descriptionFilter = '';
-    isActiveFilter = '';
-    keyWordsFilter = '';
-    itemTitleFilter = '';
-    postTypesNameFilter = '';
 
     constructor(
         injector: Injector,
-        private _postsServiceProxy: PostsServiceProxy,
+        private _postTypesesServiceProxy: PostTypesesServiceProxy,
         private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
@@ -51,7 +49,7 @@ export class PostsComponent extends AppComponentBase {
         super(injector);
     }
 
-    getPosts(event?: LazyLoadEvent) {
+    getPostTypeses(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             return;
@@ -59,15 +57,12 @@ export class PostsComponent extends AppComponentBase {
 
         this.primengTableHelper.showLoadingIndicator();
 
-        this._postsServiceProxy
+        this._postTypesesServiceProxy
             .getAll(
                 this.filterText,
-                this.titleFilter,
-                this.descriptionFilter,
+                this.nameFilter,
                 this.isActiveFilter,
-                this.keyWordsFilter,
-                this.itemTitleFilter,
-                this.postTypesNameFilter,
+                this.descriptionFilter,
                 this.primengTableHelper.getSorting(this.dataTable),
                 this.primengTableHelper.getSkipCount(this.paginator, event),
                 this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -83,14 +78,14 @@ export class PostsComponent extends AppComponentBase {
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    createPost(): void {
-        this.createOrEditPostModal.show();
+    createPostTypes(): void {
+        this.createOrEditPostTypesModal.show();
     }
 
-    deletePost(post: PostDto): void {
+    deletePostTypes(postTypes: PostTypesDto): void {
         this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
             if (isConfirmed) {
-                this._postsServiceProxy.delete(post.id).subscribe(() => {
+                this._postTypesesServiceProxy.delete(postTypes.id).subscribe(() => {
                     this.reloadPage();
                     this.notify.success(this.l('SuccessfullyDeleted'));
                 });

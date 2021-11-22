@@ -6968,75 +6968,19 @@ export class ItemsServiceProxy {
     }
 
     /**
-     * @param title (optional) 
-     * @return Success
-     */
-    getPageByTitle(title: string | undefined): Observable<GetItemForViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/Items/GetPageByTitle?";
-        if (title === null)
-            throw new Error("The parameter 'title' cannot be null.");
-        else if (title !== undefined)
-            url_ += "title=" + encodeURIComponent("" + title) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPageByTitle(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPageByTitle(<any>response_);
-                } catch (e) {
-                    return <Observable<GetItemForViewDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<GetItemForViewDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetPageByTitle(response: HttpResponseBase): Observable<GetItemForViewDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetItemForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<GetItemForViewDto>(<any>null);
-    }
-
-    /**
      * @param filter (optional) 
      * @param titleFilter (optional) 
      * @param descriptionFilter (optional) 
      * @param isActiveFilter (optional) 
      * @param imageAdressFilter (optional) 
      * @param videoAddressFilter (optional) 
-     * @param collectionNameFilter (optional) 
+     * @param subCollectionTitleFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, isActiveFilter: number | undefined, imageAdressFilter: string | undefined, videoAddressFilter: string | undefined, collectionNameFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetItemForViewDto> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, isActiveFilter: number | undefined, imageAdressFilter: string | undefined, videoAddressFilter: string | undefined, subCollectionTitleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetItemForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/Items/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -7062,10 +7006,10 @@ export class ItemsServiceProxy {
             throw new Error("The parameter 'videoAddressFilter' cannot be null.");
         else if (videoAddressFilter !== undefined)
             url_ += "VideoAddressFilter=" + encodeURIComponent("" + videoAddressFilter) + "&";
-        if (collectionNameFilter === null)
-            throw new Error("The parameter 'collectionNameFilter' cannot be null.");
-        else if (collectionNameFilter !== undefined)
-            url_ += "CollectionNameFilter=" + encodeURIComponent("" + collectionNameFilter) + "&";
+        if (subCollectionTitleFilter === null)
+            throw new Error("The parameter 'subCollectionTitleFilter' cannot be null.");
+        else if (subCollectionTitleFilter !== undefined)
+            url_ += "SubCollectionTitleFilter=" + encodeURIComponent("" + subCollectionTitleFilter) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -7347,8 +7291,8 @@ export class ItemsServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllCollectionForLookupTable(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemCollectionLookupTableDto> {
-        let url_ = this.baseUrl + "/api/services/app/Items/GetAllCollectionForLookupTable?";
+    getAllSubCollectionForLookupTable(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemSubCollectionLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Items/GetAllSubCollectionForLookupTable?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
         else if (filter !== undefined)
@@ -7376,20 +7320,20 @@ export class ItemsServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllCollectionForLookupTable(response_);
+            return this.processGetAllSubCollectionForLookupTable(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAllCollectionForLookupTable(<any>response_);
+                    return this.processGetAllSubCollectionForLookupTable(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfItemCollectionLookupTableDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfItemSubCollectionLookupTableDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfItemCollectionLookupTableDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfItemSubCollectionLookupTableDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllCollectionForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfItemCollectionLookupTableDto> {
+    protected processGetAllSubCollectionForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfItemSubCollectionLookupTableDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -7400,7 +7344,7 @@ export class ItemsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfItemCollectionLookupTableDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfItemSubCollectionLookupTableDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -7408,7 +7352,7 @@ export class ItemsServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfItemCollectionLookupTableDto>(<any>null);
+        return _observableOf<PagedResultDtoOfItemSubCollectionLookupTableDto>(<any>null);
     }
 }
 
@@ -10013,13 +9957,15 @@ export class PostsServiceProxy {
      * @param titleFilter (optional) 
      * @param descriptionFilter (optional) 
      * @param isActiveFilter (optional) 
+     * @param keyWordsFilter (optional) 
      * @param itemTitleFilter (optional) 
+     * @param postTypesNameFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, isActiveFilter: string | undefined, itemTitleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetPostForViewDto> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, isActiveFilter: string | undefined, keyWordsFilter: string | undefined, itemTitleFilter: string | undefined, postTypesNameFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetPostForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/Posts/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -10037,10 +9983,18 @@ export class PostsServiceProxy {
             throw new Error("The parameter 'isActiveFilter' cannot be null.");
         else if (isActiveFilter !== undefined)
             url_ += "IsActiveFilter=" + encodeURIComponent("" + isActiveFilter) + "&";
+        if (keyWordsFilter === null)
+            throw new Error("The parameter 'keyWordsFilter' cannot be null.");
+        else if (keyWordsFilter !== undefined)
+            url_ += "KeyWordsFilter=" + encodeURIComponent("" + keyWordsFilter) + "&";
         if (itemTitleFilter === null)
             throw new Error("The parameter 'itemTitleFilter' cannot be null.");
         else if (itemTitleFilter !== undefined)
             url_ += "ItemTitleFilter=" + encodeURIComponent("" + itemTitleFilter) + "&";
+        if (postTypesNameFilter === null)
+            throw new Error("The parameter 'postTypesNameFilter' cannot be null.");
+        else if (postTypesNameFilter !== undefined)
+            url_ += "PostTypesNameFilter=" + encodeURIComponent("" + postTypesNameFilter) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -10384,6 +10338,391 @@ export class PostsServiceProxy {
             }));
         }
         return _observableOf<PagedResultDtoOfPostItemLookupTableDto>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllPostTypesForLookupTable(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfPostPostTypesLookupTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Posts/GetAllPostTypesForLookupTable?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPostTypesForLookupTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPostTypesForLookupTable(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfPostPostTypesLookupTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfPostPostTypesLookupTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllPostTypesForLookupTable(response: HttpResponseBase): Observable<PagedResultDtoOfPostPostTypesLookupTableDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfPostPostTypesLookupTableDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfPostPostTypesLookupTableDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class PostTypesesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:44301";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param nameFilter (optional) 
+     * @param isActiveFilter (optional) 
+     * @param descriptionFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, nameFilter: string | undefined, isActiveFilter: number | undefined, descriptionFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetPostTypesForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/PostTypeses/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (nameFilter === null)
+            throw new Error("The parameter 'nameFilter' cannot be null.");
+        else if (nameFilter !== undefined)
+            url_ += "NameFilter=" + encodeURIComponent("" + nameFilter) + "&";
+        if (isActiveFilter === null)
+            throw new Error("The parameter 'isActiveFilter' cannot be null.");
+        else if (isActiveFilter !== undefined)
+            url_ += "IsActiveFilter=" + encodeURIComponent("" + isActiveFilter) + "&";
+        if (descriptionFilter === null)
+            throw new Error("The parameter 'descriptionFilter' cannot be null.");
+        else if (descriptionFilter !== undefined)
+            url_ += "DescriptionFilter=" + encodeURIComponent("" + descriptionFilter) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetPostTypesForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetPostTypesForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetPostTypesForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetPostTypesForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetPostTypesForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPostTypesForView(id: number | undefined): Observable<GetPostTypesForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/PostTypeses/GetPostTypesForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPostTypesForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPostTypesForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetPostTypesForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetPostTypesForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPostTypesForView(response: HttpResponseBase): Observable<GetPostTypesForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostTypesForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostTypesForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPostTypesForEdit(id: number | undefined): Observable<GetPostTypesForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PostTypeses/GetPostTypesForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPostTypesForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPostTypesForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetPostTypesForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetPostTypesForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPostTypesForEdit(response: HttpResponseBase): Observable<GetPostTypesForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostTypesForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostTypesForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditPostTypesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PostTypeses/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PostTypeses/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -18765,7 +19104,7 @@ export class CreateOrEditItemDto implements ICreateOrEditItemDto {
     isActive!: boolean;
     imageAdress!: string | undefined;
     videoAddress!: string | undefined;
-    collectionId!: number;
+    subCollectionId!: number;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditItemDto) {
@@ -18784,7 +19123,7 @@ export class CreateOrEditItemDto implements ICreateOrEditItemDto {
             this.isActive = _data["isActive"];
             this.imageAdress = _data["imageAdress"];
             this.videoAddress = _data["videoAddress"];
-            this.collectionId = _data["collectionId"];
+            this.subCollectionId = _data["subCollectionId"];
             this.id = _data["id"];
         }
     }
@@ -18803,7 +19142,7 @@ export class CreateOrEditItemDto implements ICreateOrEditItemDto {
         data["isActive"] = this.isActive;
         data["imageAdress"] = this.imageAdress;
         data["videoAddress"] = this.videoAddress;
-        data["collectionId"] = this.collectionId;
+        data["subCollectionId"] = this.subCollectionId;
         data["id"] = this.id;
         return data; 
     }
@@ -18815,7 +19154,7 @@ export interface ICreateOrEditItemDto {
     isActive: boolean;
     imageAdress: string | undefined;
     videoAddress: string | undefined;
-    collectionId: number;
+    subCollectionId: number;
     id: number | undefined;
 }
 
@@ -18823,7 +19162,9 @@ export class CreateOrEditPostDto implements ICreateOrEditPostDto {
     title!: string;
     description!: string | undefined;
     isActive!: string | undefined;
+    keyWords!: string | undefined;
     itemId!: number;
+    postTypesId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditPostDto) {
@@ -18840,7 +19181,9 @@ export class CreateOrEditPostDto implements ICreateOrEditPostDto {
             this.title = _data["title"];
             this.description = _data["description"];
             this.isActive = _data["isActive"];
+            this.keyWords = _data["keyWords"];
             this.itemId = _data["itemId"];
+            this.postTypesId = _data["postTypesId"];
             this.id = _data["id"];
         }
     }
@@ -18857,7 +19200,9 @@ export class CreateOrEditPostDto implements ICreateOrEditPostDto {
         data["title"] = this.title;
         data["description"] = this.description;
         data["isActive"] = this.isActive;
+        data["keyWords"] = this.keyWords;
         data["itemId"] = this.itemId;
+        data["postTypesId"] = this.postTypesId;
         data["id"] = this.id;
         return data; 
     }
@@ -18867,7 +19212,57 @@ export interface ICreateOrEditPostDto {
     title: string;
     description: string | undefined;
     isActive: string | undefined;
+    keyWords: string | undefined;
     itemId: number;
+    postTypesId: number | undefined;
+    id: number | undefined;
+}
+
+export class CreateOrEditPostTypesDto implements ICreateOrEditPostTypesDto {
+    name!: string;
+    isActive!: boolean;
+    description!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditPostTypesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isActive = _data["isActive"];
+            this.description = _data["description"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditPostTypesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditPostTypesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isActive"] = this.isActive;
+        data["description"] = this.description;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditPostTypesDto {
+    name: string;
+    isActive: boolean;
+    description: string | undefined;
     id: number | undefined;
 }
 
@@ -22638,7 +23033,7 @@ export interface IGetIncomeStatisticsDataOutput {
 
 export class GetItemForEditOutput implements IGetItemForEditOutput {
     item!: CreateOrEditItemDto;
-    collectionName!: string | undefined;
+    subCollectionTitle!: string | undefined;
 
     constructor(data?: IGetItemForEditOutput) {
         if (data) {
@@ -22652,7 +23047,7 @@ export class GetItemForEditOutput implements IGetItemForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.item = _data["item"] ? CreateOrEditItemDto.fromJS(_data["item"]) : <any>undefined;
-            this.collectionName = _data["collectionName"];
+            this.subCollectionTitle = _data["subCollectionTitle"];
         }
     }
 
@@ -22666,19 +23061,19 @@ export class GetItemForEditOutput implements IGetItemForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["item"] = this.item ? this.item.toJSON() : <any>undefined;
-        data["collectionName"] = this.collectionName;
+        data["subCollectionTitle"] = this.subCollectionTitle;
         return data; 
     }
 }
 
 export interface IGetItemForEditOutput {
     item: CreateOrEditItemDto;
-    collectionName: string | undefined;
+    subCollectionTitle: string | undefined;
 }
 
 export class GetItemForViewDto implements IGetItemForViewDto {
     item!: ItemDto;
-    collectionName!: string | undefined;
+    subCollectionTitle!: string | undefined;
 
     constructor(data?: IGetItemForViewDto) {
         if (data) {
@@ -22692,7 +23087,7 @@ export class GetItemForViewDto implements IGetItemForViewDto {
     init(_data?: any) {
         if (_data) {
             this.item = _data["item"] ? ItemDto.fromJS(_data["item"]) : <any>undefined;
-            this.collectionName = _data["collectionName"];
+            this.subCollectionTitle = _data["subCollectionTitle"];
         }
     }
 
@@ -22706,14 +23101,14 @@ export class GetItemForViewDto implements IGetItemForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["item"] = this.item ? this.item.toJSON() : <any>undefined;
-        data["collectionName"] = this.collectionName;
+        data["subCollectionTitle"] = this.subCollectionTitle;
         return data; 
     }
 }
 
 export interface IGetItemForViewDto {
     item: ItemDto;
-    collectionName: string | undefined;
+    subCollectionTitle: string | undefined;
 }
 
 export class GetLanguageForEditOutput implements IGetLanguageForEditOutput {
@@ -23051,6 +23446,7 @@ export interface IGetPasswordComplexitySettingOutput {
 export class GetPostForEditOutput implements IGetPostForEditOutput {
     post!: CreateOrEditPostDto;
     itemTitle!: string | undefined;
+    postTypesName!: string | undefined;
 
     constructor(data?: IGetPostForEditOutput) {
         if (data) {
@@ -23065,6 +23461,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         if (_data) {
             this.post = _data["post"] ? CreateOrEditPostDto.fromJS(_data["post"]) : <any>undefined;
             this.itemTitle = _data["itemTitle"];
+            this.postTypesName = _data["postTypesName"];
         }
     }
 
@@ -23079,6 +23476,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         data = typeof data === 'object' ? data : {};
         data["post"] = this.post ? this.post.toJSON() : <any>undefined;
         data["itemTitle"] = this.itemTitle;
+        data["postTypesName"] = this.postTypesName;
         return data; 
     }
 }
@@ -23086,11 +23484,13 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
 export interface IGetPostForEditOutput {
     post: CreateOrEditPostDto;
     itemTitle: string | undefined;
+    postTypesName: string | undefined;
 }
 
 export class GetPostForViewDto implements IGetPostForViewDto {
     post!: PostDto;
     itemTitle!: string | undefined;
+    postTypesName!: string | undefined;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -23105,6 +23505,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         if (_data) {
             this.post = _data["post"] ? PostDto.fromJS(_data["post"]) : <any>undefined;
             this.itemTitle = _data["itemTitle"];
+            this.postTypesName = _data["postTypesName"];
         }
     }
 
@@ -23119,6 +23520,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         data = typeof data === 'object' ? data : {};
         data["post"] = this.post ? this.post.toJSON() : <any>undefined;
         data["itemTitle"] = this.itemTitle;
+        data["postTypesName"] = this.postTypesName;
         return data; 
     }
 }
@@ -23126,6 +23528,79 @@ export class GetPostForViewDto implements IGetPostForViewDto {
 export interface IGetPostForViewDto {
     post: PostDto;
     itemTitle: string | undefined;
+    postTypesName: string | undefined;
+}
+
+export class GetPostTypesForEditOutput implements IGetPostTypesForEditOutput {
+    postTypes!: CreateOrEditPostTypesDto;
+
+    constructor(data?: IGetPostTypesForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.postTypes = _data["postTypes"] ? CreateOrEditPostTypesDto.fromJS(_data["postTypes"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetPostTypesForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostTypesForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["postTypes"] = this.postTypes ? this.postTypes.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetPostTypesForEditOutput {
+    postTypes: CreateOrEditPostTypesDto;
+}
+
+export class GetPostTypesForViewDto implements IGetPostTypesForViewDto {
+    postTypes!: PostTypesDto;
+
+    constructor(data?: IGetPostTypesForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.postTypes = _data["postTypes"] ? PostTypesDto.fromJS(_data["postTypes"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetPostTypesForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostTypesForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["postTypes"] = this.postTypes ? this.postTypes.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetPostTypesForViewDto {
+    postTypes: PostTypesDto;
 }
 
 export class GetProfilePictureOutput implements IGetProfilePictureOutput {
@@ -24799,53 +25274,13 @@ export interface IIsTenantAvailableOutput {
     serverRootAddress: string | undefined;
 }
 
-export class ItemCollectionLookupTableDto implements IItemCollectionLookupTableDto {
-    id!: number;
-    displayName!: string | undefined;
-
-    constructor(data?: IItemCollectionLookupTableDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.displayName = _data["displayName"];
-        }
-    }
-
-    static fromJS(data: any): ItemCollectionLookupTableDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ItemCollectionLookupTableDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["displayName"] = this.displayName;
-        return data; 
-    }
-}
-
-export interface IItemCollectionLookupTableDto {
-    id: number;
-    displayName: string | undefined;
-}
-
 export class ItemDto implements IItemDto {
     title!: string | undefined;
     description!: string | undefined;
     isActive!: boolean;
     imageAdress!: string | undefined;
     videoAddress!: string | undefined;
-    collectionId!: number;
+    subCollectionId!: number;
     id!: number;
 
     constructor(data?: IItemDto) {
@@ -24864,7 +25299,7 @@ export class ItemDto implements IItemDto {
             this.isActive = _data["isActive"];
             this.imageAdress = _data["imageAdress"];
             this.videoAddress = _data["videoAddress"];
-            this.collectionId = _data["collectionId"];
+            this.subCollectionId = _data["subCollectionId"];
             this.id = _data["id"];
         }
     }
@@ -24883,7 +25318,7 @@ export class ItemDto implements IItemDto {
         data["isActive"] = this.isActive;
         data["imageAdress"] = this.imageAdress;
         data["videoAddress"] = this.videoAddress;
-        data["collectionId"] = this.collectionId;
+        data["subCollectionId"] = this.subCollectionId;
         data["id"] = this.id;
         return data; 
     }
@@ -24895,8 +25330,48 @@ export interface IItemDto {
     isActive: boolean;
     imageAdress: string | undefined;
     videoAddress: string | undefined;
-    collectionId: number;
+    subCollectionId: number;
     id: number;
+}
+
+export class ItemSubCollectionLookupTableDto implements IItemSubCollectionLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: IItemSubCollectionLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): ItemSubCollectionLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ItemSubCollectionLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface IItemSubCollectionLookupTableDto {
+    id: number;
+    displayName: string | undefined;
 }
 
 export class IValueValidator implements IIValueValidator {
@@ -27287,6 +27762,54 @@ export interface IPagedResultDtoOfGetPostForViewDto {
     items: GetPostForViewDto[] | undefined;
 }
 
+export class PagedResultDtoOfGetPostTypesForViewDto implements IPagedResultDtoOfGetPostTypesForViewDto {
+    totalCount!: number;
+    items!: GetPostTypesForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetPostTypesForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetPostTypesForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetPostTypesForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetPostTypesForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetPostTypesForViewDto {
+    totalCount: number;
+    items: GetPostTypesForViewDto[] | undefined;
+}
+
 export class PagedResultDtoOfGetSubCollectionForViewDto implements IPagedResultDtoOfGetSubCollectionForViewDto {
     totalCount!: number;
     items!: GetSubCollectionForViewDto[] | undefined;
@@ -27383,11 +27906,11 @@ export interface IPagedResultDtoOfGetTagForViewDto {
     items: GetTagForViewDto[] | undefined;
 }
 
-export class PagedResultDtoOfItemCollectionLookupTableDto implements IPagedResultDtoOfItemCollectionLookupTableDto {
+export class PagedResultDtoOfItemSubCollectionLookupTableDto implements IPagedResultDtoOfItemSubCollectionLookupTableDto {
     totalCount!: number;
-    items!: ItemCollectionLookupTableDto[] | undefined;
+    items!: ItemSubCollectionLookupTableDto[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfItemCollectionLookupTableDto) {
+    constructor(data?: IPagedResultDtoOfItemSubCollectionLookupTableDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -27402,14 +27925,14 @@ export class PagedResultDtoOfItemCollectionLookupTableDto implements IPagedResul
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(ItemCollectionLookupTableDto.fromJS(item));
+                    this.items!.push(ItemSubCollectionLookupTableDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfItemCollectionLookupTableDto {
+    static fromJS(data: any): PagedResultDtoOfItemSubCollectionLookupTableDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfItemCollectionLookupTableDto();
+        let result = new PagedResultDtoOfItemSubCollectionLookupTableDto();
         result.init(data);
         return result;
     }
@@ -27426,9 +27949,9 @@ export class PagedResultDtoOfItemCollectionLookupTableDto implements IPagedResul
     }
 }
 
-export interface IPagedResultDtoOfItemCollectionLookupTableDto {
+export interface IPagedResultDtoOfItemSubCollectionLookupTableDto {
     totalCount: number;
-    items: ItemCollectionLookupTableDto[] | undefined;
+    items: ItemSubCollectionLookupTableDto[] | undefined;
 }
 
 export class PagedResultDtoOfLanguageTextListDto implements IPagedResultDtoOfLanguageTextListDto {
@@ -27717,6 +28240,54 @@ export class PagedResultDtoOfPostItemLookupTableDto implements IPagedResultDtoOf
 export interface IPagedResultDtoOfPostItemLookupTableDto {
     totalCount: number;
     items: PostItemLookupTableDto[] | undefined;
+}
+
+export class PagedResultDtoOfPostPostTypesLookupTableDto implements IPagedResultDtoOfPostPostTypesLookupTableDto {
+    totalCount!: number;
+    items!: PostPostTypesLookupTableDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfPostPostTypesLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PostPostTypesLookupTableDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfPostPostTypesLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfPostPostTypesLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfPostPostTypesLookupTableDto {
+    totalCount: number;
+    items: PostPostTypesLookupTableDto[] | undefined;
 }
 
 export class PagedResultDtoOfSubCollectionCollectionLookupTableDto implements IPagedResultDtoOfSubCollectionCollectionLookupTableDto {
@@ -28146,7 +28717,9 @@ export class PostDto implements IPostDto {
     title!: string | undefined;
     description!: string | undefined;
     isActive!: string | undefined;
+    keyWords!: string | undefined;
     itemId!: number;
+    postTypesId!: number | undefined;
     id!: number;
 
     constructor(data?: IPostDto) {
@@ -28163,7 +28736,9 @@ export class PostDto implements IPostDto {
             this.title = _data["title"];
             this.description = _data["description"];
             this.isActive = _data["isActive"];
+            this.keyWords = _data["keyWords"];
             this.itemId = _data["itemId"];
+            this.postTypesId = _data["postTypesId"];
             this.id = _data["id"];
         }
     }
@@ -28180,7 +28755,9 @@ export class PostDto implements IPostDto {
         data["title"] = this.title;
         data["description"] = this.description;
         data["isActive"] = this.isActive;
+        data["keyWords"] = this.keyWords;
         data["itemId"] = this.itemId;
+        data["postTypesId"] = this.postTypesId;
         data["id"] = this.id;
         return data; 
     }
@@ -28190,7 +28767,9 @@ export interface IPostDto {
     title: string | undefined;
     description: string | undefined;
     isActive: string | undefined;
+    keyWords: string | undefined;
     itemId: number;
+    postTypesId: number | undefined;
     id: number;
 }
 
@@ -28232,6 +28811,94 @@ export class PostItemLookupTableDto implements IPostItemLookupTableDto {
 export interface IPostItemLookupTableDto {
     id: number;
     displayName: string | undefined;
+}
+
+export class PostPostTypesLookupTableDto implements IPostPostTypesLookupTableDto {
+    id!: number;
+    displayName!: string | undefined;
+
+    constructor(data?: IPostPostTypesLookupTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+        }
+    }
+
+    static fromJS(data: any): PostPostTypesLookupTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostPostTypesLookupTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        return data; 
+    }
+}
+
+export interface IPostPostTypesLookupTableDto {
+    id: number;
+    displayName: string | undefined;
+}
+
+export class PostTypesDto implements IPostTypesDto {
+    name!: string | undefined;
+    isActive!: boolean;
+    description!: string | undefined;
+    id!: number;
+
+    constructor(data?: IPostTypesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.isActive = _data["isActive"];
+            this.description = _data["description"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): PostTypesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostTypesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["isActive"] = this.isActive;
+        data["description"] = this.description;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IPostTypesDto {
+    name: string | undefined;
+    isActive: boolean;
+    description: string | undefined;
+    id: number;
 }
 
 export class RecentTenant implements IRecentTenant {

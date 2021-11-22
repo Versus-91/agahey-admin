@@ -5,7 +5,7 @@ import { ItemRoutingModule } from './item-routing.module';
 import { ItemsComponent } from './items.component';
 import { CreateOrEditItemModalComponent } from './create-or-edit-item-modal.component';
 import { ViewItemModalComponent } from './view-item-modal.component';
-import { ItemCollectionLookupTableModalComponent } from './item-collection-lookup-table-modal.component';
+import { ItemSubCollectionLookupTableModalComponent } from './item-subCollection-lookup-table-modal.component';
 
 @NgModule({
     declarations: [
@@ -13,7 +13,7 @@ import { ItemCollectionLookupTableModalComponent } from './item-collection-looku
         CreateOrEditItemModalComponent,
         ViewItemModalComponent,
 
-        ItemCollectionLookupTableModalComponent,
+        ItemSubCollectionLookupTableModalComponent,
     ],
     imports: [AppSharedModule, ItemRoutingModule, AdminSharedModule],
 })

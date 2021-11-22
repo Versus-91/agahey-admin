@@ -1,0 +1,84 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #postTypesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="postTypes.id">{{ l('EditPostTypes') }}</span>
+                        <span *ngIf="!postTypes.id">{{ l('CreateNewPostTypes') }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="PostTypes_Name">{{ l('Name') }} *</label>
+                        <input
+                            type="text"
+                            #PostTypes_Name="ngModel"
+                            id="PostTypes_Name"
+                            class="form-control"
+                            [(ngModel)]="postTypes.name"
+                            name="Name"
+                            required
+                        />
+                        <validation-messages [formCtrl]="PostTypes_Name"></validation-messages>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="PostTypes_IsActive" class="kt-checkbox">
+                            <input
+                                id="PostTypes_IsActive"
+                                #PostTypes_IsActive="ngModel"
+                                type="checkbox"
+                                name="IsActive"
+                                [(ngModel)]="postTypes.isActive"
+                            />
+                            {{ l('IsActive') }}
+                            <span></span>
+                        </label>
+                        <validation-messages [formCtrl]="PostTypes_IsActive"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PostTypes_Description">{{ l('Description') }}</label>
+                        <input
+                            type="text"
+                            #PostTypes_Description="ngModel"
+                            id="PostTypes_Description"
+                            class="form-control"
+                            [(ngModel)]="postTypes.description"
+                            name="Description"
+                        />
+                        <validation-messages [formCtrl]="PostTypes_Description"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!postTypesForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

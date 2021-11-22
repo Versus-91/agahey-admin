@@ -1,13 +1,5 @@
-﻿<div
-    bsModal
-    #createOrEditModal="bs-modal"
-    class="modal fade"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="createOrEditModal"
-    aria-hidden="true"
-    [config]="{ backdrop: 'static' }"
->
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form *ngIf="active" #itemForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
@@ -22,106 +14,74 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group m-form__group">
-                        <label for="CollectionName">{{ l('Collection') }}</label>
+                        <label for="SubCollectionTitle">{{ l('SubCollection') }}</label>
                         <div class="input-group">
-                            <input
-                                class="form-control"
-                                id="CollectionName"
-                                name="collectionName"
-                                [(ngModel)]="collectionName"
-                                type="text"
-                                disabled
-                            />
+                            <input class="form-control" id="SubCollectionTitle" name="subCollectionTitle"
+                                [(ngModel)]="subCollectionTitle" type="text" disabled />
                             <div class="input-group-append">
-                                <button
-                                    class="btn btn-primary blue"
-                                    (click)="openSelectCollectionModal()"
-                                    type="button"
-                                >
+                                <button class="btn btn-primary blue" (click)="openSelectSubCollectionModal()"
+                                    type="button">
                                     <i class="fa fa-search"></i> {{ l('Pick') }}
                                 </button>
                             </div>
                             <div class="input-group-prepend">
-                                <button class="btn btn-danger btn-icon" type="button" (click)="setCollectionIdNull()">
+                                <button class="btn btn-danger btn-icon" type="button"
+                                    (click)="setSubCollectionIdNull()">
                                     <i class="fa fa-times"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <input
-                        class="form-control"
-                        name="item.collectionId"
-                        [(ngModel)]="item.collectionId"
-                        type="text"
-                        required
-                        hidden
-                    />
+                    <input class="form-control" name="item.subCollectionId" [(ngModel)]="item.subCollectionId"
+                        type="text" required hidden />
 
                     <div class="form-group">
                         <label for="Item_Title">{{ l('Title') }}</label>
-                        <input
-                            type="text"
-                            #Item_Title="ngModel"
-                            id="Item_Title"
-                            class="form-control"
-                            [(ngModel)]="item.title"
-                            name="Title"
-                        />
+                        <input type="text" #Item_Title="ngModel" id="Item_Title" class="form-control"
+                            [(ngModel)]="item.title" name="Title" />
                         <validation-messages [formCtrl]="Item_Title"></validation-messages>
                     </div>
 
                     <div class="form-group">
                         <label for="Item_Description">{{ l('Description') }}</label>
-                        <input
-                            type="text"
-                            #Item_Description="ngModel"
-                            id="Item_Description"
-                            class="form-control"
-                            [(ngModel)]="item.description"
-                            name="Description"
-                        />
+                        <input type="text" #Item_Description="ngModel" id="Item_Description" class="form-control"
+                            [(ngModel)]="item.description" name="Description" />
                         <validation-messages [formCtrl]="Item_Description"></validation-messages>
                     </div>
 
                     <br />
                     <div class="m-checkbox-list">
                         <label for="Item_IsActive" class="kt-checkbox">
-                            <input
-                                id="Item_IsActive"
-                                #Item_IsActive="ngModel"
-                                type="checkbox"
-                                name="IsActive"
-                                [(ngModel)]="item.isActive"
-                            />
+                            <input id="Item_IsActive" #Item_IsActive="ngModel" type="checkbox" name="IsActive"
+                                [(ngModel)]="item.isActive" />
                             {{ l('IsActive') }}
                             <span></span>
                         </label>
                         <validation-messages [formCtrl]="Item_IsActive"></validation-messages>
                     </div>
 
-                    <div class="form-group">
-                        <label for="Item_ImageAdress">{{ l('ImageAdress') }}</label>
-                        <input
-                            type="text"
-                            #Item_ImageAdress="ngModel"
-                            id="Item_ImageAdress"
-                            class="form-control"
-                            [(ngModel)]="item.imageAdress"
-                            name="ImageAdress"
-                        />
-                        <validation-messages [formCtrl]="Item_ImageAdress"></validation-messages>
+                    <div class="row" style="margin-bottom:15px;">
+                        <div class="col-md-3">
+                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)"
+                                style="display:none;">
+                            <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="upload" *ngIf="progress > 0">
+                                {{progress}}%
+                            </span>
+                            <span class="upload" *ngIf="message">
+                                {{message}}
+                            </span>
+                        </div>
                     </div>
-
+                    <div class="row" *ngIf="item.imageAdress">
+                        <img [src]="baseUrl+'/'+ item.imageAdress" height="64" width="64">
+                    </div>
                     <div class="form-group">
                         <label for="Item_VideoAddress">{{ l('VideoAddress') }}</label>
-                        <input
-                            type="text"
-                            #Item_VideoAddress="ngModel"
-                            id="Item_VideoAddress"
-                            class="form-control"
-                            [(ngModel)]="item.videoAddress"
-                            name="VideoAddress"
-                        />
+                        <input type="text" #Item_VideoAddress="ngModel" id="Item_VideoAddress" class="form-control"
+                            [(ngModel)]="item.videoAddress" name="VideoAddress" />
                         <validation-messages [formCtrl]="Item_VideoAddress"></validation-messages>
                     </div>
                 </div>
@@ -129,21 +89,14 @@
                     <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
                         {{ l('Cancel') }}
                     </button>
-                    <button
-                        type="submit"
-                        class="btn btn-primary blue"
-                        [disabled]="!itemForm.form.valid"
-                        [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"
-                    >
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!itemForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                         <i class="fa fa-save"></i> <span>{{ l('Save') }}</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <itemCollectionLookupTableModal
-        #itemCollectionLookupTableModal
-        (modalSave)="getNewCollectionId()"
-    ></itemCollectionLookupTableModal>
+    <itemSubCollectionLookupTableModal #itemSubCollectionLookupTableModal (modalSave)="getNewSubCollectionId()">
+    </itemSubCollectionLookupTableModal>
 </div>

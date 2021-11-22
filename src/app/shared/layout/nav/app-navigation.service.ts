@@ -35,6 +35,8 @@ export class AppNavigationService {
             new AppMenuItem('Posts', 'Pages.Posts', 'flaticon-more', '/app/main/posts/posts'),
             
             new AppMenuItem('Comments', 'Pages.Comments', 'flaticon-more', '/app/main/posts/comments'),
+            
+            new AppMenuItem('PostTypeses', 'Pages.PostTypeses', 'flaticon-more', '/app/main/posts/postTypeses'),
              new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),

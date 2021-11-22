@@ -1,9 +1,13 @@
 ﻿<div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="'Posts' | localize" [description]="'PostsHeaderInfo' | localize">
+        <sub-header [title]="'PostTypeses' | localize" [description]="'PostTypesesHeaderInfo' | localize">
             <div role="actions">
-                <button *ngIf="isGranted('Pages.Posts.Create')" (click)="createPost()" class="btn btn-primary blue">
-                    <i class="fa fa-plus"></i> {{ l('CreateNewPost') }}
+                <button
+                    *ngIf="isGranted('Pages.PostTypeses.Create')"
+                    (click)="createPostTypes()"
+                    class="btn btn-primary blue"
+                >
+                    <i class="fa fa-plus"></i> {{ l('CreateNewPostTypes') }}
                 </button>
             </div>
         </sub-header>
@@ -26,7 +30,11 @@
                                                 type="text"
                                             />
                                             <span class="input-group-btn">
-                                                <button (click)="getPosts()" class="btn btn-primary" type="submit">
+                                                <button
+                                                    (click)="getPostTypeses()"
+                                                    class="btn btn-primary"
+                                                    type="submit"
+                                                >
                                                     <i class="flaticon-search-1"></i>
                                                 </button>
                                             </span>
@@ -41,15 +49,28 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="TitleFilter">{{ l('Title') }}</label>
+                                        <label for="NameFilter">{{ l('Name') }}</label>
                                         <input
                                             type="text"
                                             class="form-control"
-                                            id="TitleFilter"
-                                            name="titleFilter"
-                                            [(ngModel)]="titleFilter"
+                                            id="NameFilter"
+                                            name="nameFilter"
+                                            [(ngModel)]="nameFilter"
                                         />
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="IsActiveFilterSelect">{{ l('IsActive') }}</label>
+                                    <select
+                                        class="form-control"
+                                        name="IsActiveFilter"
+                                        id="IsActiveFilterSelect"
+                                        [(ngModel)]="isActiveFilter"
+                                    >
+                                        <option value="-1">{{ l('All') }}</option>
+                                        <option value="0">{{ l('False') }}</option>
+                                        <option value="1">{{ l('True') }}</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -60,54 +81,6 @@
                                             id="DescriptionFilter"
                                             name="descriptionFilter"
                                             [(ngModel)]="descriptionFilter"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="IsActiveFilter">{{ l('IsActive') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="IsActiveFilter"
-                                            name="isActiveFilter"
-                                            [(ngModel)]="isActiveFilter"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="KeyWordsFilter">{{ l('KeyWords') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="KeyWordsFilter"
-                                            name="keyWordsFilter"
-                                            [(ngModel)]="keyWordsFilter"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="ItemTitleFilter">({{ l('Item') }}) {{ l('Title') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="ItemTitleFilter"
-                                            name="itemTitleFilter"
-                                            [(ngModel)]="itemTitleFilter"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="PostTypesNameFilter">({{ l('PostTypes') }}) {{ l('Name') }}</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="PostTypesNameFilter"
-                                            name="postTypesNameFilter"
-                                            [(ngModel)]="postTypesNameFilter"
                                         />
                                     </div>
                                 </div>
@@ -136,7 +109,7 @@
                         <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
                             <p-table
                                 #dataTable
-                                (onLazyLoad)="getPosts($event)"
+                                (onLazyLoad)="getPostTypeses($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                                 [paginator]="false"
@@ -150,33 +123,23 @@
                                     <tr>
                                         <th
                                             style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')"
+                                            [hidden]="
+                                                !isGrantedAny('Pages.PostTypeses.Edit', 'Pages.PostTypeses.Delete')
+                                            "
                                         >
                                             {{ l('Actions') }}
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="itemFk.title">
-                                            {{ l('Title') }}
-                                            <p-sortIcon field="itemTitle"></p-sortIcon>
-                                        </th>
-                                        <th style="width: 150px" pSortableColumn="postTypesFk.name">
+                                        <th style="width: 150px" pSortableColumn="name">
                                             {{ l('Name') }}
-                                            <p-sortIcon field="postTypesName"></p-sortIcon>
-                                        </th>
-                                        <th style="width: 150px" pSortableColumn="title">
-                                            {{ l('Title') }}
-                                            <p-sortIcon field="post.title"></p-sortIcon>
-                                        </th>
-                                        <th style="width: 150px" pSortableColumn="description">
-                                            {{ l('Description') }}
-                                            <p-sortIcon field="post.description"></p-sortIcon>
+                                            <p-sortIcon field="postTypes.name"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="isActive">
                                             {{ l('IsActive') }}
-                                            <p-sortIcon field="post.isActive"></p-sortIcon>
+                                            <p-sortIcon field="postTypes.isActive"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="keyWords">
-                                            {{ l('KeyWords') }}
-                                            <p-sortIcon field="post.keyWords"></p-sortIcon>
+                                        <th style="width: 150px" pSortableColumn="description">
+                                            {{ l('Description') }}
+                                            <p-sortIcon field="postTypes.description"></p-sortIcon>
                                         </th>
                                     </tr>
                                 </ng-template>
@@ -184,7 +147,9 @@
                                     <tr>
                                         <td
                                             style="width: 130px"
-                                            [hidden]="!isGrantedAny('Pages.Posts.Edit', 'Pages.Posts.Delete')"
+                                            [hidden]="
+                                                !isGrantedAny('Pages.PostTypeses.Edit', 'Pages.PostTypeses.Delete')
+                                            "
                                         >
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
@@ -196,16 +161,18 @@
                                                         <a
                                                             href="javascript:;"
                                                             class="dropdown-item"
-                                                            (click)="viewPostModal.show(record)"
+                                                            (click)="viewPostTypesModal.show(record)"
                                                             >{{ l('View') }}</a
                                                         >
                                                     </li>
                                                     <li>
                                                         <a
                                                             href="javascript:;"
-                                                            *ngIf="permission.isGranted('Pages.Posts.Edit')"
+                                                            *ngIf="permission.isGranted('Pages.PostTypeses.Edit')"
                                                             class="dropdown-item"
-                                                            (click)="createOrEditPostModal.show(record.post.id)"
+                                                            (click)="
+                                                                createOrEditPostTypesModal.show(record.postTypes.id)
+                                                            "
                                                             >{{ l('Edit') }}</a
                                                         >
                                                     </li>
@@ -213,8 +180,8 @@
                                                         <a
                                                             class="dropdown-item"
                                                             href="javascript:;"
-                                                            *ngIf="permission.isGranted('Pages.Posts.Delete')"
-                                                            (click)="deletePost(record.post)"
+                                                            *ngIf="permission.isGranted('Pages.PostTypeses.Delete')"
+                                                            (click)="deletePostTypes(record.postTypes)"
                                                             >{{ l('Delete') }}</a
                                                         >
                                                     </li>
@@ -222,28 +189,21 @@
                                             </div>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l('Title') }}</span>
-                                            {{ record.itemTitle }}
-                                        </td>
-                                        <td style="width: 150px">
                                             <span class="p-column-title"> {{ l('Name') }}</span>
-                                            {{ record.postTypesName }}
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l('Title') }}</span>
-                                            {{ record.post.title }}
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l('Description') }}</span>
-                                            {{ record.post.description }}
+                                            {{ record.postTypes.name }}
                                         </td>
                                         <td style="width: 150px">
                                             <span class="p-column-title"> {{ l('IsActive') }}</span>
-                                            {{ record.post.isActive }}
+                                            <div *ngIf="record.postTypes.isActive" class="text-center">
+                                                <i class="fa fa-check-circle text-success" title="True"></i>
+                                            </div>
+                                            <div *ngIf="!record.postTypes.isActive" class="text-center">
+                                                <i class="fa fa-times-circle" title="False"></i>
+                                            </div>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="p-column-title"> {{ l('KeyWords') }}</span>
-                                            {{ record.post.keyWords }}
+                                            <span class="p-column-title"> {{ l('Description') }}</span>
+                                            {{ record.postTypes.description }}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -255,7 +215,7 @@
                                 <p-paginator
                                     [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                     #paginator
-                                    (onPageChange)="getPosts($event)"
+                                    (onPageChange)="getPostTypeses($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                     [showCurrentPageReport]="true"
@@ -271,7 +231,10 @@
                 </div>
             </div>
         </div>
-        <createOrEditPostModal #createOrEditPostModal (modalSave)="getPosts()"></createOrEditPostModal>
-        <viewPostModal #viewPostModal></viewPostModal>
+        <createOrEditPostTypesModal
+            #createOrEditPostTypesModal
+            (modalSave)="getPostTypeses()"
+        ></createOrEditPostTypesModal>
+        <viewPostTypesModal #viewPostTypesModal></viewPostTypesModal>
     </div>
 </div>
